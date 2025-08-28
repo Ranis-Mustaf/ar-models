@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>3D модель с AR на Android</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    model-viewer {
+  width: 100%;
+  height: 100vh; 
+  max-height: 100%; 
+}
+    
+    .ar-button {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 24px;
+      font-size: 16px;
+      background: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+<model-viewer
+    id="model"
+    src="https://modelviewer.dev/shared-assets/models/Astronaut.usdz"
+    alt="3D модель"
+    auto-rotate
+    camera-controls
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    ar-scale="auto"
+    background-color="#ffffff"
+    shadow-intensity="1"
+    environment-image="neutral"
+    loading="eager">
+</model-viewer>
+
+<!-- Кнопка AR (опционально, Model Viewer сам предлагает AR) -->
+<button class="ar-button" slot="ar-button">Просмотреть в AR</button>
+
+</body>
+</html>
