@@ -1,100 +1,103 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>3D модель с AR на Android</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      background: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+  <head>
+    <meta charset="UTF-8">
+    <title>3D модель с AR на Android</title>
+    <script type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        background: #ffffff;
+        height: 100vh;
+        overflow: hidden;
+      }
 
-    model-viewer {
-      width: 100%;
-      height: 80vh;
-      max-height: 100%;
-    }
+      model-viewer {
+        width: 100%;
+        height: 100%;
+      }
 
-    /* Скрыть твою кнопку */
-    .ar-button {
-      display: none !important;
-    }
+      /* Скрыть стандартную кнопку */
+      .ar-button {
+        display: none !important;
+      }
 
-    /* Стилизуем встроенную AR-кнопку */
-    model-viewer::part(default-ar-button) {
-      width: 60%;
-      height: 60px;
-      font-size: 22px;
-      background: #2196f3;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
+      /* Стилизуем встроенную AR-кнопку */
+      model-viewer::part(default-ar-button) {
+        width: 50%;
+        height: 50px;
+        font-size: 18px;
+        background: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
 
-    /* Панель переключения моделей */
-    .switcher {
-      margin-top: 10px;
-      display: flex;
-      gap: 10px;
-    }
+      /* Панель кнопок для выбора моделей */
+      .controls {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        z-index: 2000; /* чтобы точно было поверх */
+      }
 
-    .switcher button {
-      padding: 10px 16px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #f5f5f5;
-      transition: background 0.2s;
-    }
+      .controls button {
+        padding: 10px 16px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: #4CAF50;
+        color: white;
+        font-weight: bold;
+        transition: 0.3s;
+      }
 
-    .switcher button:hover {
-      background: #ddd;
-    }
-  </style>
-</head>
-<body>
+      .controls button:hover {
+        background: #388E3C;
+      }
+    </style>
+  </head>
+  <body>
 
-  <model-viewer
-    id="model"
-    src="https://Ranis-Mustaf.github.io/ar-models/Astronaut.glb"
-    alt="3D модель"
-    auto-rotate
-    camera-controls
-    ar
-    ar-modes="webxr scene-viewer quick-look"
-    ar-scale="auto"
-    background-color="#ffffff"
-    shadow-intensity="1"
-    environment-image="neutral"
-    loading="eager">
-  </model-viewer>
+    <model-viewer
+      id="model"
+      src="https://Ranis-Mustaf.github.io/ar-models/Astronaut.glb"
+      alt="3D модель"
+      auto-rotate
+      camera-controls
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      ar-scale="auto"
+      background-color="#ffffff"
+      shadow-intensity="1"
+      environment-image="neutral"
+      loading="eager">
+    </model-viewer>
 
-  <!-- Кнопка AR -->
-  <button class="ar-button" slot="ar-button">Просмотреть в AR</button>
+    <!-- Панель кнопок -->
+    <div class="controls">
+      <button onclick="changeModel('https://Ranis-Mustaf.github.io/ar-models/Astronaut.glb')">Астронавт</button>
+      <button onclick="changeModel('https://modelviewer.dev/shared-assets/models/Robot.glb')">Робот</button>
+    </div>
 
-  <!-- Панель переключения моделей -->
-  <div class="switcher">
-    <button onclick="switchModel('https://Ranis-Mustaf.github.io/ar-models/Astronaut.glb')">Астронавт</button>
-    <button onclick="switchModel('https://Ranis-Mustaf.github.io/ar-models/Robot.glb')">Робот</button>
-  </div>
-
-  <script>
-    function switchModel(url) {
-      const modelViewer = document.getElementById("model");
-      modelViewer.setAttribute("src", url);
-    }
-  </script>
-
-</body>
+    <script>
+      function changeModel(url) {
+        const modelViewer = document.getElementById("model");
+        modelViewer.src = url;
+        // Если уже открыт AR — запускаем снова с новой моделью
+        if (modelViewer.activeARSession) {
+          modelViewer.enterAR();
+        }
+      }
+    </script>
+  </body>
 </html>
