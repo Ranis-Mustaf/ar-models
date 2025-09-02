@@ -2,34 +2,35 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>3D модели с AR</title>
-  <script type="module"
-    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <title>3D модель с AR на Android</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
       margin: 0;
       background: #ffffff;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      overflow: hidden;
-    }
-    model-viewer {
-      width: 100%;
-      height: 100vh; 
-      max-height: 100%; 
     }
 
-    /* Скрыть дефолтную AR-кнопку */
+    model-viewer {
+      width: 100%;
+      height: 80vh;
+      max-height: 100%;
+    }
+
+    /* Скрыть твою кнопку */
     .ar-button {
       display: none !important;
     }
 
+    /* Стилизуем встроенную AR-кнопку */
     model-viewer::part(default-ar-button) {
-      width: 50%;
-      height: 50%;
-      font-size: 24px;
+      width: 60%;
+      height: 60px;
+      font-size: 22px;
       background: #2196f3;
       color: white;
       border: none;
@@ -40,29 +41,25 @@
       z-index: 1000;
     }
 
-    /* Панель переключателей */
-    .model-switcher {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
+    /* Панель переключения моделей */
+    .switcher {
+      margin-top: 10px;
       display: flex;
       gap: 10px;
-      z-index: 2000;
     }
 
-    .model-switcher button {
-      padding: 10px 15px;
+    .switcher button {
+      padding: 10px 16px;
       font-size: 16px;
       border: none;
       border-radius: 8px;
-      background: #4caf50;
-      color: white;
       cursor: pointer;
+      background: #f5f5f5;
+      transition: background 0.2s;
     }
 
-    .model-switcher button:hover {
-      background: #45a049;
+    .switcher button:hover {
+      background: #ddd;
     }
   </style>
 </head>
@@ -83,21 +80,19 @@
     loading="eager">
   </model-viewer>
 
+  <!-- Кнопка AR -->
+  <button class="ar-button" slot="ar-button">Просмотреть в AR</button>
+
   <!-- Панель переключения моделей -->
-  <div class="model-switcher">
+  <div class="switcher">
     <button onclick="switchModel('https://Ranis-Mustaf.github.io/ar-models/Astronaut.glb')">Астронавт</button>
     <button onclick="switchModel('https://Ranis-Mustaf.github.io/ar-models/Robot.glb')">Робот</button>
   </div>
 
   <script>
-    const viewer = document.getElementById('model');
-
     function switchModel(url) {
-      viewer.src = url;
-      // Если уже в AR, сразу открыть новую модель
-      if (viewer.canActivateAR) {
-        viewer.activateAR();
-      }
+      const modelViewer = document.getElementById("model");
+      modelViewer.setAttribute("src", url);
     }
   </script>
 
